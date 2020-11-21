@@ -14,17 +14,17 @@ import { Link } from 'react-router-dom'
 import logo from './coin.jpg';
 import queryString from 'querystringify'
 
-const metaMarkAddress = '0x617b3f8050a0bd94b6b1da02b4384ee5b4df13f4';
+const fwBTCAddress = '0x617b3f8050a0bd94b6b1da02b4384ee5b4df13f4';
 
 class AddTokenPanel extends Component {
 
   constructor (props) {
     const {
-      tokenName = 'MetaMarks',
-        tokenSymbol = 'MARK',
-        tokenDecimals = 18,
-        tokenAddress = metaMarkAddress,
-        tokenImage = 'https://pbs.twimg.com/profile_images/802481220340908032/M_vde_oi_400x400.jpg',
+      tokenName = 'Harvest WBTC (fWBTC)',
+        tokenSymbol = 'fwBTC',
+        tokenDecimals = 8,
+        tokenAddress = fwBTCAddress,
+        tokenImage = 'https://harvest.finance/icons/wbtc.png',
         tokenNet = '1',
         message = '',
         errorMessage = '',
@@ -122,6 +122,10 @@ class AddTokenPanel extends Component {
 
           <Button
             onClick = {async (event) => {
+              this.setState({
+                errorMessage: '',
+                message: '',
+              })
               const provider = window.web3.currentProvider
               provider.sendAsync({
                 method: 'metamask_watchAsset',
@@ -135,19 +139,26 @@ class AddTokenPanel extends Component {
                   },
                 },
                 id: Math.round(Math.random() * 100000),
-              }, (err, added) => {
-                console.log('provider returned', err, added)
-                if (err || 'error' in added) {
+              }, (err, result) => {
+                console.log('provider returned', err, result)
+                if(err) {
                   this.setState({
-                    errorMessage: 'There was a problem adding the token.',
+                    errorMessage: 'An error has occurred, token could not be added.',
                     message: '',
                   })
-                  return
+                }else {
+                  if (result.result) {
+                    this.setState({
+                      errorMessage: '',
+                      message: `${tokenName} was added to wallet!`,
+                    })
+                  } else {
+                    this.setState({
+                      errorMessage: '',
+                      message: `${tokenName} has not been added to wallet.`,
+                    })
+                  }
                 }
-                this.setState({
-                  message: 'Token added!',
-                  errorMessage: '',
-                })
               })
             }}
           >Watch in Wallet</Button>
