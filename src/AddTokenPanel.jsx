@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import logo from './coin.jpg';
 import queryString from 'querystringify'
 
-const fwBTCAddress = '0x617b3f8050a0bd94b6b1da02b4384ee5b4df13f4';
+const fwBTCAddress = '0x5d9d25c7C457dD82fc8668FFC6B9746b674d4EcB';
 
 class AddTokenPanel extends Component {
 
